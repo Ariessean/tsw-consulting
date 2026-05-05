@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TSW Consulting — DVBE Certified</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+:root{
+  --navy:#07162f;--navy-2:#10284d;--royal:#2453a6;
+  --red:#c62839;--gold:#cfa64a;--gold-2:#f1cc72;
+  --cream:#f8f9fa;--paper:#fcfbf8;
+  --text:#07162f;--soft:#5e6b7d;
+  --muted:rgba(255,255,255,.65);--dim:rgba(255,255,255,.2);
+  --line:rgba(7,22,47,.07);--r:20px;--rb:50px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:17px}
+body{font-family:'Barlow',sans-serif;font-size:1rem;line-height:1.7;background:var(--cream);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,h5,h6{font-family:'Barlow Condensed',sans-serif;letter-spacing:.01em}
+.mono{font-family:'DM Mono',monospace}
+
+/* ── AMBIENT ── */
+.ambient{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(90px)}
+.b1{width:55vw;height:55vw;top:-15%;left:-12%;background:rgba(36,83,166,.07);animation:bp 12s ease-in-out infinite}
+.b2{width:45vw;height:45vw;bottom:-12%;right:-10%;background:rgba(207,166,74,.06);animation:bp 10s ease-in-out infinite;animation-delay:-5s}
+.b3{width:30vw;height:30vw;top:45%;left:42%;background:rgba(198,40,57,.04);animation:bp 14s ease-in-out infinite;animation-delay:-9s}
+@keyframes bp{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.1);opacity:1}}
+.grid-bg{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(7,22,47,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(7,22,47,.022) 1px,transparent 1px);
+  background-size:52px 52px}
+
+/* ── GLASS ── */
+.glass{background:rgba(255,255,255,.75);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.6);box-shadow:0 8px 32px rgba(7,22,47,.06)}
+.glass-dark{background:rgba(7,22,47,.68);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.1);box-shadow:0 8px 40px rgba(0,0,0,.3)}
+
+/* ── TOP NAV ── */
+#topnav{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:999;width:90%;max-width:720px;transition:opacity .4s,transform .4s cubic-bezier(.34,1.56,.64,1);will-change:opacity,transform}
+#topnav.hidden{opacity:0;transform:translateX(-50%) translateY(-16px);pointer-events:none}
+.nav-wrap{display:flex;align-items:center;justify-content:space-between;padding:6px 8px;background:rgba(255,255,255,.85);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.7);border-radius:60px;box-shadow:0 4px 24px rgba(7,22,47,.1),inset 0 1px 0 rgba(255,255,255,.9)}
+.n-logo{font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:700;color:var(--navy);padding:7px 14px 7px 8px;border-right:1px solid rgba(7,22,47,.08);margin-right:2px;display:flex;align-items:center;gap:5px}
+.n-logo .dot{color:var(--gold)}
+.n-link{display:flex;align-items:center;padding:7px 12px;border-radius:50px;font-size:.65rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;text-decoration:none;color:rgba(7,22,47,.5);transition:color .2s,background .2s;white-space:nowrap}
+.n-link:hover{color:var(--navy);background:rgba(7,22,47,.05)}
+.n-cta{margin-left:4px;background:linear-gradient(135deg,#3B0003,#B62227);color:#fff!important;font-weight:700;padding:8px 16px;border-radius:50px;box-shadow:0 4px 14px rgba(182,34,39,.35);transition:all .25s cubic-bezier(.34,1.56,.64,1)}
+.n-cta:hover{background:linear-gradient(135deg,#4d0005,#d42830);transform:translateY(-2px);box-shadow:0 6px 20px rgba(182,34,39,.5)}
+
+/* ── BOTTOM DOCK ── */
+#dock{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);z-index:999;display:flex;align-items:center;gap:3px;padding:5px 7px;background:rgba(7,22,47,.78);backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);border:1px solid rgba(255,255,255,.11);border-radius:60px;box-shadow:0 8px 40px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.07);opacity:0;transition:opacity .45s cubic-bezier(.22,1,.36,1),transform .45s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
+#dock.visible{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:all}
+#dock.lit{background:rgba(5,14,35,.88);border-color:rgba(207,166,74,.22);box-shadow:0 12px 50px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.08)}
+.d-logo{font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:700;color:#fff;padding:8px 14px 8px 10px;border-right:1px solid rgba(255,255,255,.1);margin-right:2px}
+.d-logo .dot{color:var(--gold)}
+.d-link{position:relative;display:flex;align-items:center;gap:5px;padding:8px 12px;border-radius:50px;font-size:.63rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;text-decoration:none;color:rgba(255,255,255,.48);transition:color .25s,background .25s;white-space:nowrap}
+.d-link:hover{color:#fff;background:rgba(255,255,255,.07)}
+.d-link.on{color:var(--navy);background:var(--gold)}
+.d-link .dot{width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.4;flex-shrink:0}
+.d-link.on .dot{opacity:1}
+.d-cta{margin-left:4px;background:linear-gradient(135deg,#3B0003,#B62227);color:#fff!important;font-weight:700;padding:8px 15px;border-radius:50px;box-shadow:0 4px 14px rgba(182,34,39,.4)}
+.d-cta:hover{background:linear-gradient(135deg,#4d0005,#d42830)!important;box-shadow:0 6px 20px rgba(182,34,39,.55)}
+
+/* ── HERO ── */
+.hero{min-height:100vh;position:relative;display:flex;align-items:center;overflow:hidden;
+  background:radial-gradient(ellipse 80% 60% at 15% 20%,rgba(198,40,57,.1) 0%,transparent 42%),
+  radial-gradient(ellipse 85% 70% at 80% 25%,rgba(36,83,166,.16) 0%,transparent 48%),
+  linear-gradient(135deg,#0c1d3b 0%,#10284d 45%,#173865 100%);z-index:1}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 80%)}
+.orb{position:absolute;border-radius:50%;pointer-events:none}
+.orb1{width:600px;height:600px;top:-150px;right:-100px;background:radial-gradient(circle,rgba(241,204,114,.14) 0%,transparent 65%);animation:float 9s ease-in-out infinite}
+.orb2{width:400px;height:400px;bottom:-60px;left:-60px;background:radial-gradient(circle,rgba(198,40,57,.12) 0%,transparent 65%)}
+@keyframes float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-22px) scale(1.03)}}
+.hero-in{position:relative;z-index:2;max-width:1200px;margin:0 auto;width:100%;padding:130px 60px 80px;display:grid;grid-template-columns:1.15fr .85fr;gap:60px;align-items:center}
+
+.status-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:50px;padding:6px 14px;font-family:'DM Mono',monospace;font-size:.6rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:24px}
+.s-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:pls 2.5s infinite;flex-shrink:0}
+@keyframes pls{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.55)}}
+.hero-h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(2.2rem,4.2vw,3.6rem);font-weight:700;line-height:1.1;letter-spacing:-.03em;color:#fff;margin-bottom:18px}
+.hero-h1 .accent{color:var(--gold)}
+.hero-sub{font-size:.9rem;line-height:1.85;color:rgba(255,255,255,.6);max-width:420px;margin-bottom:36px}
+.acts{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:12px 24px;border-radius:var(--rb);font-family:'Barlow',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;transition:all .3s cubic-bezier(.34,1.56,.64,1)}
+.btn:hover{transform:translateY(-3px)}
+.btn-gold{background:linear-gradient(135deg,#3B0003,#B62227);color:#fff;box-shadow:0 4px 20px rgba(182,34,39,.4)}
+.btn-gold:hover{background:linear-gradient(135deg,#4d0005,#d42830);box-shadow:0 8px 30px rgba(182,34,39,.55)}
+.btn-ghost{background:rgba(255,255,255,.08);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.18)}
+.btn-ghost:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.3)}
+
+.hero-cards{display:flex;flex-direction:column;gap:12px}
+.hero-badge-wrap{display:flex;justify-content:center;margin-bottom:6px}
+.hero-badge-wrap svg{filter:drop-shadow(0 12px 36px rgba(0,0,0,.4));width:152px;height:152px;animation:float 8s ease-in-out infinite}
+.hc{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:20px 24px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);position:relative;overflow:hidden;transition:all .4s cubic-bezier(.34,1.56,.64,1)}
+.hc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(207,166,74,.45),transparent)}
+.hc:hover{background:rgba(255,255,255,.11);border-color:rgba(207,166,74,.3);transform:translateX(6px)}
+.hc-tag{display:inline-block;background:rgba(207,166,74,.15);color:var(--gold);font-family:'DM Mono',monospace;font-size:.56rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:3px 9px;border-radius:50px;margin-bottom:8px}
+.hc-t{font-family:'Barlow Condensed',sans-serif;font-size:.92rem;font-weight:600;color:#fff;margin-bottom:4px}
+.hc-m{font-size:.7rem;color:rgba(255,255,255,.5);line-height:1.5}
+.hc-badge{display:inline-block;margin-top:8px;background:rgba(207,166,74,.08);border:1px solid rgba(207,166,74,.2);color:var(--gold);font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:50px}
+
+/* ── METRICS ── */
+.metrics-strip{position:relative;z-index:1;padding:0 60px}
+.metrics-inner{max-width:1200px;margin:0 auto;border-radius:20px;overflow:hidden}
+.metrics-row{display:flex;align-items:center;justify-content:space-around;padding:36px 48px;gap:20px;flex-wrap:wrap}
+.m-item{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+.m-label{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.42)}
+.m-val{font-family:'Barlow Condensed',sans-serif;font-size:2.2rem;font-weight:700;color:#fff;letter-spacing:-.02em;line-height:1}
+.m-sub{font-size:.68rem;font-weight:500;margin-top:2px}
+.m-div{width:1px;height:48px;background:rgba(255,255,255,.08)}
+
+/* ── SECTION BASE ── */
+.sec{padding:100px 60px;position:relative;z-index:1}
+.sec-in{max-width:1200px;margin:0 auto}
+.ey{font-family:'DM Mono',monospace;font-size:.6rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--red);margin-bottom:10px}
+.ey-g{color:var(--gold)}
+.sh{font-family:'Barlow Condensed',sans-serif;font-size:clamp(1.7rem,2.8vw,2.4rem);font-weight:700;line-height:1.18;margin-bottom:14px;letter-spacing:-.025em}
+.sp{font-size:.88rem;line-height:1.9;color:var(--soft);max-width:500px}
+
+
+/* ── SERVICES ── */
+#services{background:linear-gradient(180deg,#dde6f4 0%,#d4e0f0 100%)}
+.svc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:48px}
+.svc-card{background:rgba(255,255,255,.82);border:1px solid rgba(7,22,47,.12);border-radius:20px;padding:28px 22px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);position:relative;overflow:hidden;transition:all .4s cubic-bezier(.34,1.56,.64,1);box-shadow:0 4px 20px rgba(7,22,47,.07)}
+.svc-card::after{content:'';position:absolute;inset:0;border-radius:20px;background:linear-gradient(135deg,rgba(36,83,166,.06),rgba(207,166,74,.05));opacity:0;transition:opacity .35s}
+.svc-card:hover{transform:translateY(-8px);border-color:rgba(36,83,166,.15);box-shadow:0 20px 50px rgba(7,22,47,.1)}
+.svc-card:hover::after{opacity:1}
+.svc-icon{width:46px;height:46px;background:rgba(36,83,166,.07);border:1px solid rgba(36,83,166,.1);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.05rem;color:var(--royal);margin-bottom:16px;transition:all .3s}
+.svc-card:hover .svc-icon{background:rgba(198,40,57,.07);border-color:rgba(198,40,57,.14);color:var(--red)}
+.svc-name{font-family:'Barlow Condensed',sans-serif;font-size:.88rem;font-weight:700;color:var(--navy);margin-bottom:8px;letter-spacing:-.01em}
+.svc-desc{font-size:.74rem;line-height:1.75;color:var(--soft)}
+
+/* ── ABOUT (dark) ── */
+#about{background:linear-gradient(135deg,#10284d 0%,#0a1e40 100%);position:relative;overflow:hidden;z-index:1}
+#about::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 80% 50%,rgba(207,166,74,.07) 0%,transparent 60%);pointer-events:none}
+.about-in{max-width:1200px;margin:0 auto;padding:100px 60px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.about-in .ey{color:var(--gold)}
+.about-in .sh{color:#fff}
+.about-in .sp{color:rgba(255,255,255,.58)}
+.vals{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.val{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:20px 18px;transition:all .4s cubic-bezier(.34,1.56,.64,1)}
+.val:hover{background:rgba(255,255,255,.12);border-color:rgba(207,166,74,.28);transform:scale(1.025)}
+.val-i{font-size:1.15rem;color:var(--gold);margin-bottom:10px}
+.val-n{font-family:'Barlow Condensed',sans-serif;font-size:.8rem;font-weight:700;color:#fff;margin-bottom:4px}
+.val-t{font-size:.72rem;color:rgba(255,255,255,.5);line-height:1.6}
+
+/* ── CERTIFICATIONS ── */
+#certifications{background:linear-gradient(180deg,#e8eef8 0%,#dde6f4 100%)}
+.cert-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:48px}
+.cert-card{background:rgba(255,255,255,.85);border:1px solid rgba(7,22,47,.1);border-left:4px solid var(--gold);border-radius:20px;padding:28px;display:flex;gap:18px;align-items:flex-start;backdrop-filter:blur(12px);transition:all .4s cubic-bezier(.34,1.56,.64,1);box-shadow:0 4px 20px rgba(7,22,47,.08)}
+.cert-card:hover{background:#fff;border-left-color:var(--red);transform:translateY(-5px);box-shadow:0 16px 48px rgba(7,22,47,.1)}
+.cert-card.full{grid-column:1/-1}
+.cert-ico{width:44px;height:44px;background:rgba(36,83,166,.07);border:1px solid rgba(36,83,166,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.95rem;color:var(--royal);flex-shrink:0}
+.cert-lbl{font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:4px}
+.cert-ttl{font-family:'Barlow Condensed',sans-serif;font-size:.9rem;font-weight:700;color:var(--navy);margin-bottom:6px}
+.cert-body{font-size:.73rem;color:var(--soft);line-height:1.65}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.chip{font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.07em;text-transform:uppercase;padding:3px 9px;border-radius:50px;background:rgba(36,83,166,.05);border:1px solid rgba(36,83,166,.1);color:var(--navy)}
+
+/* ── PAST PERFORMANCE (dark) ── */
+#performance{background:linear-gradient(135deg,#10284d 0%,#0a1e40 100%);position:relative;overflow:hidden;z-index:1}
+#performance::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 20% 50%,rgba(207,166,74,.06) 0%,transparent 60%);pointer-events:none}
+.perf-in{max-width:1200px;margin:0 auto;padding:100px 60px}
+.perf-in .ey{color:var(--gold)}
+.perf-in .sh{color:#fff}
+.perf-in .sp{color:rgba(255,255,255,.58)}
+.pp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:48px}
+.pp-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:28px 22px;transition:all .4s cubic-bezier(.34,1.56,.64,1)}
+.pp-card:hover{background:rgba(255,255,255,.11);border-color:rgba(207,166,74,.25);transform:scale(1.025)}
+.pp-ico{font-size:1.25rem;color:var(--gold);margin-bottom:12px}
+.pp-name{font-family:'Barlow Condensed',sans-serif;font-size:.85rem;font-weight:700;color:#fff;margin-bottom:6px}
+.pp-text{font-size:.73rem;color:rgba(255,255,255,.5);line-height:1.65}
+
+/* ── CONTACT ── */
+#contact{background:linear-gradient(180deg,#dde6f4 0%,#e8eef8 100%)}
+.co-wrap{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.1fr;gap:80px;align-items:start}
+.co-wrap .ey{color:var(--red)}
+.co-wrap .sh{color:var(--navy)}
+.c-items{margin-top:32px;display:flex;flex-direction:column;gap:10px}
+.c-item{display:flex;gap:12px;align-items:flex-start;background:rgba(255,255,255,.82);border:1px solid rgba(7,22,47,.1);border-radius:16px;padding:14px 16px;transition:all .3s}
+.c-item:hover{background:#fff;box-shadow:0 4px 16px rgba(7,22,47,.06)}
+.c-ico{width:34px;height:34px;background:rgba(198,40,57,.07);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.82rem;color:var(--red);flex-shrink:0}
+.c-lbl{font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:2px}
+.c-val{font-size:.8rem;color:var(--text)}
+.c-form{background:rgba(255,255,255,.9);border:1px solid rgba(7,22,47,.12);border-radius:24px;padding:36px;backdrop-filter:blur(20px);box-shadow:0 16px 50px rgba(7,22,47,.07);position:relative;overflow:hidden}
+.c-form::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(198,40,57,.28),transparent)}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fg{margin-bottom:14px}
+.fl{display:block;font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft);margin-bottom:6px}
+.fi,.fsel,.fta{width:100%;background:#fff;border:1px solid rgba(7,22,47,.1);border-radius:12px;padding:10px 14px;font-family:'Barlow',sans-serif;font-size:.8rem;color:var(--text);outline:none;transition:border-color .2s,box-shadow .2s}
+.fi:focus,.fsel:focus,.fta:focus{border-color:rgba(36,83,166,.4);box-shadow:0 0 0 3px rgba(36,83,166,.07)}
+.fta{resize:vertical;min-height:90px}
+.fsub{width:100%;background:var(--navy);color:#fff;padding:13px;border-radius:50px;border:none;cursor:pointer;font-family:'Barlow',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;transition:all .3s cubic-bezier(.34,1.56,.64,1);box-shadow:0 4px 20px rgba(7,22,47,.22)}
+.fsub:hover{background:var(--royal);transform:translateY(-3px);box-shadow:0 8px 28px rgba(36,83,166,.38)}
+
+/* ── FOOTER ── */
+footer{background:#05101f;border-top:1px solid rgba(255,255,255,.06);padding:32px 60px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;position:relative;z-index:1}
+.f-logo{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;color:#fff}
+.f-logo .dot{color:var(--gold)}
+.f-copy{font-family:'DM Mono',monospace;font-size:.62rem;color:rgba(255,255,255,.22)}
+.f-badges{display:flex;gap:7px}
+.f-badge{font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;border-radius:50px;border:1px solid rgba(207,166,74,.2);color:rgba(207,166,74,.7);background:rgba(255,255,255,.03)}
+
+/* ── SCROLL REVEAL ── */
+.sr{opacity:0;transform:translateY(36px);transition:opacity .82s cubic-bezier(.22,1,.36,1),transform .82s cubic-bezier(.22,1,.36,1)}
+.sr.sl{transform:translateX(-36px)}
+.sr.sr-r{transform:translateX(36px)}
+.sr.in{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.17s}.d3{transition-delay:.26s}
+.d4{transition-delay:.35s}.d5{transition-delay:.44s}.d6{transition-delay:.53s}
+.d7{transition-delay:.62s}.d8{transition-delay:.71s}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1100px){.svc-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){
+  #topnav{top:14px;width:92%}
+  .n-link:not(.n-cta){display:none}
+  #dock{bottom:16px;padding:4px 5px}
+  .d-link:not(.d-cta){padding:7px 9px;font-size:0;gap:0}
+  .d-link:not(.d-cta) .dot{width:6px;height:6px;opacity:.5}
+  .d-link.on .dot{opacity:1}
+  .hero-in{grid-template-columns:1fr;padding:110px 22px 60px;gap:40px}
+  .about-in{grid-template-columns:1fr;padding:60px 22px;gap:40px}
+  .co-wrap{grid-template-columns:1fr;gap:36px}
+  .sec{padding:60px 22px}
+  .perf-in{padding:60px 22px}
+  .metrics-strip{padding:0 22px}
+  .metrics-row{padding:28px 24px}
+  .svc-grid{grid-template-columns:1fr}
+  .cert-grid{grid-template-columns:1fr}
+  .cert-card.full{grid-column:auto}
+  .pp-grid{grid-template-columns:1fr}
+  .f-row{grid-template-columns:1fr}
+  footer{flex-direction:column;text-align:center;padding:26px 22px}
+.c-form{padding:24px}
+}
+</style>
+</head>
+<body>
+
+<!-- Ambient background -->
+<div class="ambient"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<div class="grid-bg"></div>
+
+<!-- TOP NAV -->
+<nav id="topnav">
+  <div class="nav-wrap">
+    <div class="n-logo">TSW<span class="dot">.</span></div>
+    <a href="#hero"           class="n-link">Home</a>
+    <a href="#services"       class="n-link">Services</a>
+    <a href="#about"          class="n-link">About</a>
+    <a href="#certifications" class="n-link">Certs</a>
+    <a href="#contact"        class="n-link n-cta">Contact →</a>
+  </div>
+</nav>
+
+<!-- BOTTOM DOCK -->
+<nav id="dock">
+  <div class="d-logo">TSW<span class="dot">.</span></div>
+  <a href="#hero"           class="d-link on"><span class="dot"></span>Home</a>
+  <a href="#services"       class="d-link"><span class="dot"></span>Services</a>
+  <a href="#about"          class="d-link"><span class="dot"></span>About</a>
+  <a href="#certifications" class="d-link"><span class="dot"></span>Certs</a>
+  <a href="#performance"    class="d-link"><span class="dot"></span>Track Record</a>
+  <a href="#contact"        class="d-link d-cta">Contact →</a>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section id="hero" class="hero">
+  <div class="hero-grid"></div>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="hero-in">
+    <div>
+      <div class="status-pill sr"><span class="s-dot"></span>DVBE Certified · State of California</div>
+      <h1 class="hero-h1 sr d1">Trusted Supply &amp;<br><span class="accent">Consulting</span><br>for California</h1>
+      <p class="hero-sub sr d2">TSW Consulting Inc. is a California-certified Disabled Veteran Business Enterprise delivering medical supplies, procurement consulting, and state contract support.</p>
+      <div class="acts sr d3">
+        <a href="#contact" class="btn btn-gold">Request a Quote</a>
+        <a href="#services" class="btn btn-ghost">Our Services</a>
+      </div>
+    </div>
+    <div class="hero-cards sr sr-r d2">
+      <div class="hero-badge-wrap">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="California Small Business SBE DVBE Veteran Owned">
+          <defs>
+            <radialGradient id="ob" cx="45%" cy="32%" r="72%"><stop offset="0%" stop-color="#6ab8f0"/><stop offset="45%" stop-color="#2560c4"/><stop offset="100%" stop-color="#0c328a"/></radialGradient>
+            <radialGradient id="is" cx="38%" cy="30%" r="70%"><stop offset="0%" stop-color="#ffffff"/><stop offset="55%" stop-color="#ddeeff"/><stop offset="100%" stop-color="#bbd4f0"/></radialGradient>
+            <linearGradient id="gr" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#f5d060"/><stop offset="50%" stop-color="#e8a820"/><stop offset="100%" stop-color="#f5d060"/></linearGradient>
+            <path id="ta" d="M 21,100 A 79,79 0 0,1 179,100"/>
+          </defs>
+          <polygon points="100,7 112.2,22.94 128.74,11.53 135.4,30.5 154.66,24.73 155.15,44.85 175.24,45.32 169.5,64.58 188.44,71.24 177.04,87.8 193,100 177.04,112.2 188.44,128.76 169.5,135.42 175.24,154.68 155.15,155.15 154.66,175.27 135.4,169.5 128.74,188.47 112.2,177.06 100,193 87.8,177.06 71.26,188.47 64.6,169.5 45.34,175.27 44.85,155.15 24.76,154.68 30.5,135.42 11.56,128.76 22.96,112.2 7,100 22.96,87.8 11.56,71.24 30.5,64.58 24.76,45.32 44.85,44.85 45.34,24.73 64.6,30.5 71.26,11.53 87.8,22.94" fill="url(#ob)" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+          <circle cx="100" cy="100" r="86" fill="url(#ob)"/>
+          <circle cx="100" cy="100" r="80" fill="none" stroke="white" stroke-width="2.5"/>
+          <circle cx="100" cy="100" r="77" fill="none" stroke="url(#gr)" stroke-width="2"/>
+          <circle cx="100" cy="100" r="74.5" fill="none" stroke="white" stroke-width="1"/>
+          <circle cx="100" cy="100" r="73" fill="url(#is)"/>
+          <text font-size="7.2" fill="white" font-weight="800" letter-spacing="2" font-family="Arial Black,Arial,sans-serif"><textPath href="#ta" startOffset="50%" text-anchor="middle">CALIFORNIA SMALL BUSINESS</textPath></text>
+          <text x="100" y="74" text-anchor="middle" font-size="14" fill="#0b2f80" font-weight="900" font-family="Arial Black,Arial,sans-serif" letter-spacing="2">SBE</text>
+          <line x1="62" y1="79" x2="138" y2="79" stroke="#1a4a9a" stroke-width="0.8" opacity="0.4"/>
+          <text x="100" y="126" text-anchor="middle" font-size="46" fill="#0b2f80" font-weight="900" font-family="Arial Black,Arial,sans-serif" letter-spacing="-1">DVBE</text>
+          <text x="100" y="141" text-anchor="middle" font-size="8.5" fill="#0b2f80" font-weight="700" font-family="Arial,sans-serif" letter-spacing="1.8">VETERAN OWNED</text>
+          <text x="87" y="155" text-anchor="middle" font-size="9" fill="#d4a012">★</text>
+          <text x="100" y="155" text-anchor="middle" font-size="9" fill="#d4a012">★</text>
+          <text x="113" y="155" text-anchor="middle" font-size="9" fill="#d4a012">★</text>
+        </svg>
+      </div>
+      <div class="hc">
+        <div class="hc-tag">State Certification</div>
+        <div class="hc-t">Disabled Veteran Business Enterprise</div>
+        <div class="hc-m">CA Dept. of General Services · Office of Small Business &amp; DVBE Services</div>
+        <span class="hc-badge">Active thru 09/2026</span>
+      </div>
+      <div class="hc">
+        <div class="hc-tag">Business Registration</div>
+        <div class="hc-t">TSW Consulting Inc.</div>
+        <div class="hc-m">California Seller's Permit · FEIN: 88-2535802 · Newport Coast, CA 92657</div>
+        <span class="hc-badge">Permit #256968096 · Active</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ METRICS ══ -->
+<div class="metrics-strip">
+  <div class="metrics-inner glass-dark">
+    <div class="metrics-row">
+      <div class="m-item sr">
+        <div class="m-label">Certification</div>
+        <div class="m-val">DVBE</div>
+        <div class="m-sub" style="color:#4ade80"><i class="fa-solid fa-shield-check" style="font-size:.65rem;margin-right:4px"></i>Verified</div>
+      </div>
+      <div class="m-div sr d1"></div>
+      <div class="m-item sr d1">
+        <div class="m-label">Revenue Led</div>
+        <div class="m-val" data-count="20" data-prefix="$" data-suffix="M+">$20M+</div>
+        <div class="m-sub" style="color:#60a5fa"><i class="fa-solid fa-arrow-trend-up" style="font-size:.65rem;margin-right:4px"></i>Annual</div>
+      </div>
+      <div class="m-div sr d2"></div>
+      <div class="m-item sr d2">
+        <div class="m-label">Deals Annually</div>
+        <div class="m-val" data-count="1700" data-prefix="" data-suffix="+">1,700+</div>
+        <div class="m-sub" style="color:var(--gold)"><i class="fa-solid fa-bolt" style="font-size:.65rem;margin-right:4px"></i>High-Volume</div>
+      </div>
+      <div class="m-div sr d3"></div>
+      <div class="m-item sr d3">
+        <div class="m-label">Compliance</div>
+        <div class="m-val">100%</div>
+        <div class="m-sub" style="color:#f87171"><i class="fa-solid fa-certificate" style="font-size:.65rem;margin-right:4px"></i>CA Certified</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ SERVICES ══ -->
+<section id="services" class="sec" style="background:linear-gradient(180deg,var(--cream) 0%,#edf1f7 100%)">
+  <div class="sec-in">
+    <div class="sr">
+      <div class="ey">What We Do</div>
+      <h2 class="sh">Services Built for<br>Government &amp; Commercial Clients</h2>
+      <p class="sp">From medical supply procurement to technology solutions — end-to-end support for California state agencies.</p>
+    </div>
+    <div class="svc-grid">
+      <div class="svc-card sr d1"><div class="svc-icon"><i class="fa-solid fa-kit-medical"></i></div><div class="svc-name">Medical Supplies</div><p class="svc-desc">Procurement and distribution of medical supplies and equipment for state agencies, healthcare facilities, and commercial clients.</p></div>
+      <div class="svc-card sr d2"><div class="svc-icon"><i class="fa-solid fa-file-contract"></i></div><div class="svc-name">Government Contracting</div><p class="svc-desc">Full-service support for California state contract solicitations — bid prep, CUF compliance, and DVBE documentation.</p></div>
+      <div class="svc-card sr d3"><div class="svc-icon"><i class="fa-solid fa-truck"></i></div><div class="svc-name">Supply Chain &amp; Logistics</div><p class="svc-desc">Efficient drop-ship and direct delivery logistics coordinated with established suppliers for timely contract fulfillment.</p></div>
+      <div class="svc-card sr d4"><div class="svc-icon"><i class="fa-solid fa-chart-line"></i></div><div class="svc-name">Procurement Consulting</div><p class="svc-desc">Advisory services helping agencies and prime contractors maximize DVBE participation goals through CA procurement regulations.</p></div>
+      <div class="svc-card sr d5"><div class="svc-icon"><i class="fa-solid fa-magnifying-glass"></i></div><div class="svc-name">Vendor Sourcing</div><p class="svc-desc">Strategic vendor identification and qualification — connecting agencies with compliant, cost-effective suppliers.</p></div>
+      <div class="svc-card sr d6"><div class="svc-icon"><i class="fa-solid fa-folder-open"></i></div><div class="svc-name">Compliance Support</div><p class="svc-desc">Assistance with SABRC certifications, technology disclosures, Darfur Act filings, and all required state compliance documentation.</p></div>
+      <div class="svc-card sr d7"><div class="svc-icon"><i class="fa-solid fa-robot"></i></div><div class="svc-name">Technology &amp; Automation</div><p class="svc-desc">Systems implementation, CRM setup, and process efficiency solutions that streamline operations and scale revenue.</p></div>
+      <div class="svc-card sr d8"><div class="svc-icon"><i class="fa-solid fa-chart-bar"></i></div><div class="svc-name">Sales Strategy</div><p class="svc-desc">Revenue optimization and sales growth consulting backed by $20M+ in proven annual sales leadership experience.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ABOUT ══ -->
+<div id="about">
+  <div class="about-in">
+    <div class="sr sl">
+      <div class="ey">Who We Are</div>
+      <h2 class="sh">A Veteran-Owned Business Committed to Excellence</h2>
+      <p class="sp">TSW Consulting Inc. is led by Taylor Warren, a disabled veteran and CEO headquartered in Newport Coast, California. With over $20M in annual sales leadership experience and 1,700+ high-value deals executed, we bring proven results to every engagement.</p>
+      <br>
+      <p class="sp">As a certified DVBE and non-manufacturer service provider, we serve California state agencies and commercial clients with integrity, discipline, and mission focus.</p>
+    </div>
+    <div class="vals sr sr-r d2">
+      <div class="val"><div class="val-i"><i class="fa-solid fa-medal"></i></div><div class="val-n">Veteran-Led</div><p class="val-t">Disabled veteran ownership at the core of our mission and operations.</p></div>
+      <div class="val"><div class="val-i"><i class="fa-solid fa-circle-check"></i></div><div class="val-n">Fully Compliant</div><p class="val-t">All certifications current and maintained in good standing with DGS.</p></div>
+      <div class="val"><div class="val-i"><i class="fa-solid fa-handshake"></i></div><div class="val-n">Client-Focused</div><p class="val-t">Long-term relationships and reliable execution on every engagement.</p></div>
+      <div class="val"><div class="val-i"><i class="fa-solid fa-bolt"></i></div><div class="val-n">Responsive</div><p class="val-t">Fast turnaround on quotes, documentation, and supply fulfillment.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CERTIFICATIONS ══ -->
+<section id="certifications" class="sec">
+  <div class="sec-in">
+    <div class="sr">
+      <div class="ey">Credentials &amp; Compliance</div>
+      <h2 class="sh">Certified &amp; Ready to Perform</h2>
+      <p class="sp">All required California state certifications to participate in government contracts as a prime or subcontractor.</p>
+    </div>
+    <div class="cert-grid">
+      <div class="cert-card sr d1">
+        <div class="cert-ico"><i class="fa-solid fa-award"></i></div>
+        <div><div class="cert-lbl">CA Dept. of General Services</div><div class="cert-ttl">DVBE Certification</div><p class="cert-body">Approved Disabled Veteran Business Enterprise. Cert ID 2041103, valid through September 30, 2026.</p><div class="chips"><span class="chip">DVBE</span><span class="chip">Approved</span><span class="chip">Non-Manufacturer</span><span class="chip">Service</span></div></div>
+      </div>
+      <div class="cert-card sr d2">
+        <div class="cert-ico"><i class="fa-solid fa-scroll"></i></div>
+        <div><div class="cert-lbl">CA Dept. of Tax &amp; Fee Administration</div><div class="cert-ttl">Seller's Permit</div><p class="cert-body">Active California Seller's Permit (No. 256968096) authorizing the sale of tangible personal property since September 12, 2024.</p><div class="chips"><span class="chip">Active</span><span class="chip">Sales Tax Compliant</span></div></div>
+      </div>
+      <div class="cert-card sr d3">
+        <div class="cert-ico"><i class="fa-solid fa-file-lines"></i></div>
+        <div><div class="cert-lbl">State of California — STD 204</div><div class="cert-ttl">Payee Data Record</div><p class="cert-body">Registered payee with the State of California. FEIN 88-2535802, entity type "All Others" Corporation, on file with state agencies.</p><div class="chips"><span class="chip">On File</span><span class="chip">FEIN Verified</span></div></div>
+      </div>
+      <div class="cert-card sr d4">
+        <div class="cert-ico"><i class="fa-solid fa-clipboard-check"></i></div>
+        <div><div class="cert-lbl">CUF · CV 012 · DVBE Declaration</div><div class="cert-ttl">Commercially Useful Function</div><p class="cert-body">Certified to perform a distinct element of work, manage and supervise contract obligations. Signed by CEO Taylor Warren.</p><div class="chips"><span class="chip">CUF Certified</span><span class="chip">DV Declaration</span><span class="chip">Bidder Declaration</span></div></div>
+      </div>
+      <div class="cert-card full sr d5">
+        <div class="cert-ico"><i class="fa-solid fa-building"></i></div>
+        <div><div class="cert-lbl">SAM.gov / Federal Registration</div><div class="cert-ttl">NAICS Codes</div><p class="cert-body">Registered under four NAICS codes covering management consulting, business support, and durable goods wholesale. CAGE Code and UEI pending.</p><div class="chips"><span class="chip">541611</span><span class="chip">541618</span><span class="chip">541614</span><span class="chip">423990</span><span class="chip">UEI Pending</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PAST PERFORMANCE ══ -->
+<div id="performance">
+  <div class="perf-in">
+    <div class="sr">
+      <div class="ey">Track Record</div>
+      <h2 class="sh">Past Performance</h2>
+      <p class="sp">Proven results across high-volume contracting, enterprise sales, and government procurement.</p>
+    </div>
+    <div class="pp-grid">
+      <div class="pp-card sr d1"><div class="pp-ico"><i class="fa-solid fa-sack-dollar"></i></div><div class="pp-name">$20M+ Revenue Led</div><p class="pp-text">Led teams generating over $20 million in annual revenue through strategic sales and contract execution.</p></div>
+      <div class="pp-card sr d2"><div class="pp-ico"><i class="fa-solid fa-file-signature"></i></div><div class="pp-name">1,700+ Deals Annually</div><p class="pp-text">Managed and executed thousands of client transactions with expertise in high-value contract negotiation.</p></div>
+      <div class="pp-card sr d3"><div class="pp-ico"><i class="fa-solid fa-handshake-angle"></i></div><div class="pp-name">Prime &amp; Sub Experience</div><p class="pp-text">Coordinated prime/subcontractor relationships across multiple California state agency engagements.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CONTACT ══ -->
+<section id="contact" class="sec">
+  <div class="sec-in">
+    <div class="co-wrap">
+      <div class="sr sl">
+        <div class="ey">Get In Touch</div>
+        <h2 class="sh">Let's Work Together</h2>
+        <p class="sp">Ready to fulfill your procurement needs or discuss a contract opportunity? Reach out — we respond promptly.</p>
+        <div class="c-items">
+          <div class="c-item"><div class="c-ico"><i class="fa-solid fa-user"></i></div><div><div class="c-lbl">Contact</div><div class="c-val">Taylor Warren, CEO</div></div></div>
+          <div class="c-item"><div class="c-ico"><i class="fa-solid fa-location-dot"></i></div><div><div class="c-lbl">Address</div><div class="c-val">Newport Beach, California</div></div></div>
+          <div class="c-item"><div class="c-ico"><i class="fa-solid fa-phone"></i></div><div><div class="c-lbl">Phone</div><div class="c-val">310-483-9693</div></div></div>
+          <div class="c-item"><div class="c-ico"><i class="fa-solid fa-envelope"></i></div><div><div class="c-lbl">Email</div><div class="c-val">taylor@tswconsulting-usa.com</div></div></div>
+        </div>
+      </div>
+      <div class="c-form sr sr-r d2">
+        <div class="f-row">
+          <div class="fg"><label class="fl">First Name</label><input class="fi" type="text" placeholder="Jane"></div>
+          <div class="fg"><label class="fl">Last Name</label><input class="fi" type="text" placeholder="Smith"></div>
+        </div>
+        <div class="fg"><label class="fl">Email Address</label><input class="fi" type="email" placeholder="jane@agency.ca.gov"></div>
+        <div class="fg"><label class="fl">Organization / Agency</label><input class="fi" type="text" placeholder="State Agency or Company Name"></div>
+        <div class="fg"><label class="fl">Inquiry Type</label>
+          <select class="fsel">
+            <option value="">Select a category…</option>
+            <option>Medical Supplies / Procurement</option>
+            <option>Government Contract Support</option>
+            <option>DVBE Subcontracting</option>
+            <option>Compliance Documentation</option>
+            <option>General Inquiry</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">Message</label><textarea class="fta" placeholder="Tell us about your needs or solicitation…"></textarea></div>
+        <button class="fsub" onclick="this.textContent='Message Sent ✓';this.style.background='#16a34a'">Send Message →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="f-logo">TSW<span class="dot">.</span> Consulting</div>
+  <p class="f-copy">© 2025 TSW Consulting Inc. · Newport Beach, CA · FEIN 88-2535802</p>
+  <div class="f-badges"><span class="f-badge">DVBE</span><span class="f-badge">CA Certified</span></div>
+</footer>
+
+<script>
+(function(){
+  /* ── Scroll Reveal ── */
+  const obs = new IntersectionObserver(es => {
+    es.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); } });
+  },{threshold:0.08});
+  document.querySelectorAll('.sr').forEach(el => obs.observe(el));
+
+  /* ── Nav / Dock ── */
+  const topnav = document.getElementById('topnav');
+  const dock   = document.getElementById('dock');
+  const dlinks = document.querySelectorAll('.d-link:not(.d-cta)');
+  const secs   = ['hero','services','about','certifications','performance','contact'];
+  const secEls = secs.map(id => document.getElementById(id));
+  const THRESH = 80;
+
+  function tick(){
+    const y = window.scrollY;
+    topnav.classList.toggle('hidden', y > THRESH);
+    dock.classList.toggle('visible', y > THRESH);
+    dock.classList.toggle('lit', y > 200);
+    let cur = 'hero';
+    secEls.forEach((el,i) => { if(el && y >= el.offsetTop - 260) cur = secs[i]; });
+    dlinks.forEach(l => l.classList.toggle('on', l.getAttribute('href') === '#'+cur));
+  }
+  window.addEventListener('scroll', tick, {passive:true});
+  tick();
+  dlinks.forEach(l => l.addEventListener('click', function(){
+    dlinks.forEach(x => x.classList.remove('on'));
+    this.classList.add('on');
+  }));
+
+  /* ── Count-up ── */
+  function countUp(el, target, prefix, suffix, dur){
+    const start = performance.now();
+    (function step(now){
+      const p = Math.min((now - start) / dur, 1);
+      const ease = 1 - Math.pow(1 - p, 3);
+      const v = Math.floor(ease * target);
+      el.textContent = prefix + (v >= 1000 ? v.toLocaleString() : v) + suffix;
+      if(p < 1) requestAnimationFrame(step);
+    })(start);
+  }
+  const mObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.querySelectorAll('[data-count]').forEach(el => {
+          countUp(el, +el.dataset.count, el.dataset.prefix||'', el.dataset.suffix||'', 1800);
+        });
+        mObs.unobserve(e.target);
+      }
+    });
+  },{threshold:0.3});
+  const ms = document.querySelector('.metrics-strip');
+  if(ms) mObs.observe(ms);
+})();
+</script>
+</body>
+</html>
